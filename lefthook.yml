@@ -1,0 +1,8 @@
+pre-commit:
+  parallel: true
+  commands:
+    frontend-linter-style:
+      glob: "apps/frontend/*.{js,ts,jsx,tsx}"
+      run: pnpm --filter @insta-peek/frontend check {staged_files}
+      root: "apps/frontend/"
+      stage_fixed: true

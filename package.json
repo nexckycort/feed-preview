@@ -1,0 +1,22 @@
+{
+  "name": "insta-peek",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "engines": {
+    "npm": ">=8.0.0",
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "build": "pnpm --parallel --filter='./apps/*' run build",
+    "deploy": "pnpm --parallel --filter='./apps/*' run deploy",
+    "postinstall": "lefthook install"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.8.3",
+    "@types/node": "20.14.9",
+    "lefthook": "^1.7.14"
+  }
+}

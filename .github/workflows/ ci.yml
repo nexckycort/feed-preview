@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches: ['main']
+    paths:
+      - 'apps/**'
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  build-deploy:
+    name: Build and Deploy
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        with:
+          version: 9
+          run_install: false
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build
+        run: pnpm build
+
+      - name: Deploy to netlify
+        uses: netlify/actions/cli@master
+        with:
+          args: deploy --prod --dir=apps/frontend/dist
+        env:
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
